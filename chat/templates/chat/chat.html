@@ -1,0 +1,469 @@
+{% extends 'chat/base.html' %}
+
+{% block content %}
+<style>
+    /* Ajoutez votre CSS ici */
+    .container-wrapper {
+        display: flex;
+    }
+
+    .container {
+        margin-top: 20px;
+        display: flex;
+        width: 60%;
+        margin-right: 20px;
+    }
+
+    .sidebar {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-right: 1px solid #ddd;
+        width: 30%;
+        margin: 100px 0px;
+
+    }
+
+    .sidebar h4 {
+
+        background-color: #1ee9f8;
+        display: inline-block;
+        border-radius: 2px;
+    }
+
+    .main-content {
+        flex: 3;
+        padding: 20px;
+    }
+
+    .conversation-count {
+        margin-bottom: 10px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        background-color: #115ba5;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 5px 5px 0 0;
+    }
+
+    .card-body {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 0 0 5px 5px;
+    }
+
+    ul {
+        padding-left: 0;
+        list-style-type: none;
+    }
+
+    li {
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    ------------------------ .card-footer {
+        background-color: #1273d4;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    .container {
+        max-width: 800px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f2ef;
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    h3 {
+        margin: 0 0 10px;
+        font-size: 1.2em;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    input[type="text"] {
+        width: 70%;
+        padding: 8px;
+        font-size: 1em;
+    }
+
+    input[type="submit"] {
+        padding: 8px 15px;
+        background-color: #0073b1;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #005a8e;
+    }
+
+
+    /* Ajoutez votre CSS ici */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0b4397;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        margin-bottom: 20px;
+        border: none;
+        box-shadow: none;
+    }
+
+    .card-header {
+        background-color: #599afc;
+        border-bottom: 1px #ddd;
+
+        padding: 10px 15px;
+    }
+
+    .card-title {
+        margin: 0;
+        font-size: 1.2em;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    .list-unstyled {
+        padding-left: 0;
+        list-style-type: none;
+        margin: 0;
+    }
+
+    .list-unstyled li {
+        padding: 10px;
+        border-radius: 25px;
+        display: inline-block;
+        margin-bottom: 10px;
+        word-wrap: break-word;
+        /* Ajout pour limiter la largeur du fond au texte */
+        overflow: hidden;
+
+    }
+
+    .list-unstyled li:last-child {
+        border-bottom: none;
+
+    }
+
+    .list-unstyled li strong {
+        font-weight: bold;
+    }
+
+    .input-group {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #f5f0f4;
+        border-radius: 25px;
+    }
+
+    input[type="text"] {
+        width: calc(100% - 80px);
+        padding: 10px;
+        font-size: 1em;
+        border: none;
+        border-radius: 25px;
+        background-color: #e9ebee;
+        margin-right: 10px;
+    }
+
+    input[type="submit"] {
+        padding: 8px 15px;
+        background-color: #0073b1;
+        color: #fff;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #005a8e;
+    }
+
+    /* Animation pour les messages entrants */
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        to {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+    }
+
+    .list-unstyled li {
+        display: block;
+        /* Les messages occupent toute la ligne */
+        margin-bottom: 10px;
+    }
+
+    .message-in span,
+    .message-out span {
+        display: inline-block;
+        /* Le fond coloré occupe seulement la taille du texte */
+        padding: 5px 10px;
+        border: 1px outset #ddd;
+        border-radius: 10px;
+        word-wrap: break-word;
+    }
+
+    .message-in {
+        text-align: left;
+        margin-right: auto;
+        margin-left: 0;
+        animation: slideIn 0.5s ease;
+    }
+
+    .message-out {
+        text-align: right;
+        margin-left: auto;
+        margin-right: 0;
+        animation: slideIn 0.5s ease;
+    }
+
+    .message-in span {
+        background-color: #e9ebee;
+    }
+
+    .message-out span {
+        background-color: #0073b1;
+        color: #fff;
+    }
+
+    /* Vos animations */
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        flex-grow: 1;
+        margin-right: 10px;
+        /* Ajout de marge à droite pour séparer les éléments */
+    }
+
+    .conversation-count {
+        background-color: #0073b1;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+
+    .container-wrapper {
+        display: flex;
+    }
+
+    .container {
+        width: 60%;
+        margin-right: 20px;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 40px;
+        width: 38%;
+        height:auto;
+        /* Largeur de la fenêtre */
+        background-color: #f9f9f9;
+        padding: 10px;
+        
+        /* Pour s'assurer que le div est au-dessus des autres éléments */
+    }
+
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .card-header {
+        background-color: #115ba5;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 5px 5px 0 0;
+    }
+
+    .card-body {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 0 0 5px 5px;
+    }
+
+    ul {
+        padding-left: 0;
+        list-style-type: none;
+    }
+
+    li {
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f3f2ef;
+        margin: 0;
+        padding: 0;
+    }
+
+    h3 {
+        margin: 0 0 10px;
+        font-size: 1.2em;
+    }
+
+    form {
+        margin-top: 20px;
+    }
+
+    input[type="text"] {
+        width: 70%;
+        padding: 8px;
+        font-size: 1em;
+    }
+
+    input[type="submit"] {
+        padding: 8px 15px;
+        background-color: #0073b1;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #005a8e;
+    }
+</style>
+<div-container-wrapper>
+    <div class="container">
+
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Messages with {{ user.username }}</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        {% for message in messages %}
+                        {% if message.sender == me %}
+                        <li class="message-out" class="text-right"><span>{{ message.text }}</span></li>
+                        {% else %}
+                        <li class="message-in"><span>{{ message.sender.username }}: {{ message.text }}</span></li>
+                        {% endif %}
+                        
+                        {% endfor %}
+
+                        {% for message in messages %}
+    {% if message.sender != me %}
+        <script>addConversation('{{ message.sender.username }}');</script>
+    {% endif %}
+{% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" name="message" id="message" class="form-control" required>
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar" id="sidebar">
+        <h4>{{ user.username }}</h4>
+        <div class="conversation-count">Total conversations: {{ conversations_count }}</div>
+    </div>
+ 
+<script>
+    // JavaScript pour mettre à jour le contenu du sidebar
+    function addConversation(username) {
+        var sidebar = document.getElementById('sidebar');
+        var div = document.createElement('div');
+        div.innerHTML = '<h4>' + username + '</h4>';
+        sidebar.appendChild(div);
+    }
+
+    // Exemple d'utilisation : ajouter une conversation avec un utilisateur nommé 'John'
+   
+</script>
+</div>
+
+
+{% endblock %}
